@@ -12,9 +12,10 @@ library(lubridate)
   
   block<- c("ALGERIA","BURKINA FASO","COTE D IVOIRE","MAURITANIA","MALI","GUINEA","GHANA","TOGO","BENIN","SIERRA LEONE","LIBERIA","GUINEA-BISSAU","THE GAMBIA","SENEGAL","NIGERIA","NIGER","CAMEROON","CHAD","CENTRAL AFRICAN REPUBLIC","DEMOCRATIC REPUBLIC OF THE CONGO","CONGO","GABON","EQUATORIAL GUINEA","RWANDA","BURUNDI ","ANGOLA","KENYA","ERITREA","ETHIOPIA","SOUTH SUDAN","UGANDA","TANZANIA","MALAWI","ZAMBIA","MOZAMBIQUE","ZIMBABWE","BOTSWANA","NAMIBIA","ESWATINI (KINGDOM)","LESOTHO(KINGDOM","SOUTH AFRICA","MADAGASCAR","COMOROS","SEYCHELLES","MAURITIUS","CAPE VERDE","SAO TOME AND PRINCIPE","UNITED REPUBLIC OF TANZANIA")
   
+  #map layout
   pays<- c("ALGERIA","BURKINA FASO","COTE D IVOIRE","MAURITANIA","MALI","GUINEA","GHANA","TOGO","BENIN","SIERRA LEONE","LIBERIA","GUINEA-BISSAU","THE GAMBIA","SENEGAL","NIGERIA","NIGER","CAMEROON","CHAD","CENTRAL AFRICAN REPUBLIC","DEMOCRATIC REPUBLIC OF THE CONGO","CONGO","GABON","EQUATORIAL GUINEA","RWANDA","BURUNDI ","ANGOLA","KENYA","ERITREA","ETHIOPIA","SOUTH SUDAN","UGANDA","TANZANIA","MALAWI","ZAMBIA","MOZAMBIQUE","ZIMBABWE","BOTSWANA","NAMIBIA","ESWATINI (KINGDOM)","LESOTHO(KINGDOM","SOUTH AFRICA","MADAGASCAR","COMOROS","SEYCHELLES","MAURITIUS","CAPE VERDE","SAO TOME AND PRINCIPE","UNITED REPUBLIC OF TANZANIA")
   
-  
+  # load the  (scope)
   data <- read_csv("C:/Users/TOURE/Mes documents/REPOSITORIES/SCOPE/scope.csv")
   c<-data |>
     mutate(month = month(round_start_date)) |>
@@ -117,7 +118,7 @@ library(lubridate)
       TRUE~district))
   
   
-  writexl::write_xlsx(c,"C:/Users/TOURE/Mes documents/REPOSITORIES/LQAS_raw_data/SIA_SCOPE_LAST_six_month.xlsx")
+  # writexl::write_xlsx(c,"C:/Users/TOURE/Mes documents/REPOSITORIES/LQAS_raw_data/SIA_SCOPE_LAST_six_month.xlsx")
   
   d0<- ym("2024-04")
   d1<- ym("2024-05")
@@ -127,7 +128,8 @@ library(lubridate)
   d5<- ym("2024-09")
   d6<- ym("2024-10")
   
-  # "2024-06", "2024-07", "2024-08", "2024-09", "2024-10"
+  
+  # looping maps
   
   plots_list <- list()
   
@@ -138,7 +140,7 @@ library(lubridate)
       select(country, province, district, vaccine.type)
     
     
-    
+    # shape files
     
     all_countries <- read_rds("global.ctry.rds")
     all_provinces <- read_rds("global.prov.rds")
@@ -156,7 +158,7 @@ library(lubridate)
       filter(ADM0_NAME %in% block)
     district_layer <-all_districts |>
       filter(ADM0_NAME %in% block)
-    #join the spatial layer of provinces
+    #join the spatial layer of districts
     LQAS_performance2 <- left_join(district_layer, A, relationship = "many-to-many",  
                                    by=c("ADM0_NAME" = "country",
                                         "ADM2_NAME" = "district")) |> 
@@ -194,6 +196,7 @@ library(lubridate)
   
   # Display the plots
   multiplot_with_caption
+  
 
 
 
